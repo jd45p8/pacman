@@ -5,7 +5,9 @@
  */
 package pacman.view;
 
-import javafx.scene.input.KeyCode;
+import java.util.ArrayList;
+import javax.swing.JLabel;
+import pacman.controller.menuController;
 
 /**
  *
@@ -18,6 +20,8 @@ public class Menu extends javax.swing.JFrame {
      */
     public Menu() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        menuController.menu = this;
     }
 
     /**
@@ -38,6 +42,19 @@ public class Menu extends javax.swing.JFrame {
         exitSelector = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(738, 470));
+        setMinimumSize(new java.awt.Dimension(738, 470));
+        setPreferredSize(new java.awt.Dimension(738, 470));
+        setResizable(false);
+        setSize(new java.awt.Dimension(738, 470));
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                formKeyReleased(evt);
+            }
+        });
 
         container.setBackground(new java.awt.Color(1, 1, 1));
 
@@ -48,11 +65,6 @@ public class Menu extends javax.swing.JFrame {
         tile.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 77, 0), 4, true));
 
         selectpanel.setBackground(new java.awt.Color(1, 1, 1));
-        selectpanel.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                selectpanelKeyPressed(evt);
-            }
-        });
 
         startText.setFont(new java.awt.Font("Rockwell Extra Bold", 0, 36)); // NOI18N
         startText.setForeground(new java.awt.Color(254, 254, 254));
@@ -78,7 +90,7 @@ public class Menu extends javax.swing.JFrame {
         selectpanelLayout.setHorizontalGroup(
             selectpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, selectpanelLayout.createSequentialGroup()
-                .addContainerGap(119, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(selectpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(exitSelector, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(startSelector, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE))
@@ -108,21 +120,21 @@ public class Menu extends javax.swing.JFrame {
             containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(containerLayout.createSequentialGroup()
                 .addGap(102, 102, 102)
-                .addComponent(tile, javax.swing.GroupLayout.PREFERRED_SIZE, 533, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(103, Short.MAX_VALUE))
+                .addComponent(tile, javax.swing.GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE)
+                .addGap(103, 103, 103))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, containerLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(selectpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(162, 162, 162)
+                .addComponent(selectpanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(156, 156, 156))
         );
         containerLayout.setVerticalGroup(
             containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(containerLayout.createSequentialGroup()
                 .addGap(57, 57, 57)
-                .addComponent(tile, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tile, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
                 .addGap(55, 55, 55)
-                .addComponent(selectpanel, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(93, Short.MAX_VALUE))
+                .addComponent(selectpanel, javax.swing.GroupLayout.PREFERRED_SIZE, 128, Short.MAX_VALUE)
+                .addGap(93, 93, 93))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -139,9 +151,16 @@ public class Menu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void selectpanelKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_selectpanelKeyPressed
-        
-    }//GEN-LAST:event_selectpanelKeyPressed
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        menuController.changeOptionDisplayed(evt, new ArrayList<JLabel>(){{
+            add(startSelector);
+            add(exitSelector);
+        }});
+    }//GEN-LAST:event_formKeyPressed
+
+    private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
+        menuController.launchOption(evt, this);
+    }//GEN-LAST:event_formKeyReleased
 
     /**
      * @param args the command line arguments
