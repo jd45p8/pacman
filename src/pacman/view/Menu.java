@@ -42,9 +42,7 @@ public class Menu extends javax.swing.JFrame {
         exitSelector = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(738, 470));
         setMinimumSize(new java.awt.Dimension(738, 470));
-        setPreferredSize(new java.awt.Dimension(738, 470));
         setResizable(false);
         setSize(new java.awt.Dimension(738, 470));
         addKeyListener(new java.awt.event.KeyAdapter() {

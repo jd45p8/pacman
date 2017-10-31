@@ -1,5 +1,6 @@
 package pacman.controller;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -11,9 +12,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import pacman.view.Tablero;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -25,10 +25,15 @@ import javax.swing.JFileChooser;
  * @author jd45
  */
 public class tableroController {
-
+    /**
+     * Es el tablero donde se dibuja el juego.
+     */
+    public static Tablero tablero;
+    
+    
     /**
      * Es el tamaño de los mapas del tablero en número de elementos por fila y
-     * columna
+     * columna.
      */
     public static int n = 30;
 
@@ -155,7 +160,9 @@ public class tableroController {
     /**
      * Dibuja un mapa sobre un lienzo
      */
-    public static void drawMapa(Graphics2D g){
+    public static void drawMapa(){
+        tablero.panel.setBackground(Color.black);
+        Graphics2D g = (Graphics2D) tablero.panel.getGraphics();
         
     }
 }

@@ -73,9 +73,11 @@ public class menuController {
     public static void launchOption(KeyEvent evt, Menu parent) {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             switch (optionSelected) {
-                case 1:                    
-                    new Tablero().setVisible(true);
-                    parent.setVisible(false);
+                case 1:  
+                    parent.setVisible(false);                      
+                    tableroController.tablero = new Tablero();
+                    tableroController.tablero.setVisible(true);
+                    tableroController.drawMapa();
                     break;
                 default:
                     menu.dispose();
