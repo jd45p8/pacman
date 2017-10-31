@@ -5,6 +5,9 @@
  */
 package pacman.view;
 
+import javax.swing.JFileChooser;
+import pacman.controller.tableroController;
+
 /**
  *
  * @author jd45
@@ -17,6 +20,8 @@ public class Tablero extends javax.swing.JFrame {
     public Tablero() {
         initComponents();
         this.setLocationRelativeTo(null);
+        //tableroController.generarMapas();
+        tableroController.leerMapas();        
     }
 
     /**
