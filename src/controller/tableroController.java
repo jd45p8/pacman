@@ -1,5 +1,6 @@
-package pacman.controller;
+package controller;
 
+import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.io.BufferedReader;
@@ -9,11 +10,14 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
-import pacman.view.Tablero;
+import view.Tablero;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -25,12 +29,27 @@ import pacman.view.Tablero;
  * @author jd45
  */
 public class tableroController {
+
     /**
      * Es el tablero donde se dibuja el juego.
      */
     public static Tablero tablero;
-    
-    
+
+    /**
+     * Es el hilo sobre el cual se ejecuta el dibujado del mapa.
+     */
+    public static Thread drawTread;
+
+    /**
+     * Es el ArrayList que contiene los mapas del juego.
+     */
+    static ArrayList<int[][]> mapas = new ArrayList<>();
+
+    /**
+     * Es el nivel donde se encuentra el jugador.
+     */
+    public static int level;
+
     /**
      * Es el tamaño de los mapas del tablero en número de elementos por fila y
      * columna.
@@ -45,11 +64,11 @@ public class tableroController {
     /**
      * Genera mapas aleatorios en un archivo.
      */
-    public static ArrayList<int[][]> generarMapas() {
+    public static ArrayList<int[][]> generarMapas(int numMapas) {
         ArrayList<int[][]> mapas = new ArrayList<>();
-        int numMapas = 50, k = 0;
+        int k = 0;
 
-        while (k <= 50) {
+        while (k <= numMapas) {
             int mapa[][] = new int[n][n];
             int cubierto = 0;
             Random rd = new Random();
@@ -109,60 +128,69 @@ public class tableroController {
     /**
      * Lee mapas de un archivo.
      */
-    public static ArrayList<int[][]> leerMapas() {
-        ArrayList<int[][]> mapas = new ArrayList<>();
-        File file = null;
+    public static void leerMapas() {
+        BufferedReader rd = null;
 
-        JFileChooser chooser = new JFileChooser();
-        int op = chooser.showOpenDialog(null);
+        rd = new BufferedReader(new InputStreamReader(tableroController.class.getClassLoader().getResourceAsStream("extras/mapas.txt")));
+        try {
+            String line = rd.readLine();
+            int i = 1;
+            int mapa[][] = new int[n][n];
 
-        if (op == JFileChooser.APPROVE_OPTION) {
-            file = chooser.getSelectedFile();
-
-            BufferedReader rd = null;
-            try {
-                rd = new BufferedReader(new FileReader(file));
-                try {
-                    String line = rd.readLine();
-                    int i = 1;
-                    int mapa[][] = new int[n][n];
-                    
-                    while (line != null) {
-                        String mapaS[] = line.substring(1, line.length() - 1).split(", ");
-                        for (int j = 0; j < n; j++) {
-                            mapa[i][j] = Integer.parseInt(mapaS[j]);
-                        }
-                        
-                        i++;
-                        if(i == n){
-                            mapas.add(mapa);
-                            mapa = new int[n][n];
-                            i = 0;
-                        }
-                        line =  rd.readLine();                        
-                    }
-                } catch (IOException ex) {
-                    System.out.println("Algo inesperado ocurrió mientra se leía el archivo.");
+            while (line != null) {
+                String mapaS[] = line.substring(1, line.length() - 1).split(", ");
+                for (int j = 0; j < n; j++) {
+                    mapa[i][j] = Integer.parseInt(mapaS[j]);
                 }
-            } catch (FileNotFoundException ex) {
-                System.out.println("Algo inesperado ocurrió mientra se abría el archivo.");
-            } finally {
+
+                i++;
+                if (i == n) {
+                    mapas.add(mapa);
+                    mapa = new int[n][n];
+                    i = 0;
+                }
+                line = rd.readLine();
+            }
+        } catch (IOException ex) {
+            System.out.println("Algo inesperado ocurrió mientra se leía el archivo.");
+        }
+
+    }
+
+    /**
+     * Añade el hilo para el dibujado del mapa
+     */
+    public static void addDrawMapa(Canvas canvas) {
+        leerMapas();
+        drawTread = new Thread(new Runnable() {
+            @Override
+            public void run() {
                 try {
-                    rd.close();
-                } catch (IOException ex1) {
-                    System.out.println("Algo inesperado ocurrió.");
+                    canvas.createBufferStrategy(2);
+                    Graphics2D g = (Graphics2D) canvas.getBufferStrategy().getDrawGraphics();
+                    while (true) {
+                        int[][] mapa = mapas.get(level);
+                        int tamaño = canvas.getHeight() / n;
+                        g.setColor(Color.BLACK);
+                        g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+                        for (int i = 0; i < n; i++) {
+                            for (int j = 0; j < n; j++) {
+                                if (mapa[i][j] == 0) {
+                                    g.setColor(Color.WHITE);
+                                } else {
+                                    g.setColor(Color.BLACK);
+                                }
+                                g.fillRect(i * tamaño, j * tamaño,tamaño,tamaño);
+                            }
+                        }
+                        canvas.getBufferStrategy().show();
+                        Thread.sleep(20);
+                    }
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(tableroController.class
+                            .getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        }
-        return mapas;
-    }
-    
-    /**
-     * Dibuja un mapa sobre un lienzo
-     */
-    public static void drawMapa(){
-        tablero.panel.setBackground(Color.black);
-        Graphics2D g = (Graphics2D) tablero.panel.getGraphics();
-        
+        });
     }
 }

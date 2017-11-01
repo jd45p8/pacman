@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package pacman.controller;
+package controller;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.JLabel;
-import pacman.view.Menu;
-import pacman.view.Tablero;
+import view.Menu;
+import view.Tablero;
 
 /**
  *
@@ -76,8 +76,6 @@ public class menuController {
                 case 1:  
                     parent.setVisible(false);                      
                     tableroController.tablero = new Tablero();
-                    tableroController.tablero.setVisible(true);
-                    tableroController.drawMapa();
                     break;
                 default:
                     menu.dispose();

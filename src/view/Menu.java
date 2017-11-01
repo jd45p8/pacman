@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package pacman.view;
+package view;
 
 import java.util.ArrayList;
 import javax.swing.JLabel;
-import pacman.controller.menuController;
+import controller.menuController;
+import controller.tableroController;
 
 /**
  *
