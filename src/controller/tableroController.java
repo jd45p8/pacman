@@ -134,13 +134,13 @@ public class tableroController {
         rd = new BufferedReader(new InputStreamReader(tableroController.class.getClassLoader().getResourceAsStream("extras/mapas.txt")));
         try {
             String line = rd.readLine();
-            int i = 1;
+            int i = 0;
             int mapa[][] = new int[n][n];
 
             while (line != null) {
                 String mapaS[] = line.substring(1, line.length() - 1).split(", ");
                 for (int j = 0; j < n; j++) {
-                    mapa[i][j] = Integer.parseInt(mapaS[j]);
+                    mapa[j][i] = Integer.parseInt(mapaS[j]);
                 }
 
                 i++;
@@ -173,14 +173,16 @@ public class tableroController {
                         int tamaño = canvas.getHeight() / n;
                         g.setColor(Color.BLACK);
                         g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+
                         for (int i = 0; i < n; i++) {
                             for (int j = 0; j < n; j++) {
-                                if (mapa[i][j] == 0) {
+                                if (mapa[j][i] == 0) {
                                     g.setColor(Color.WHITE);
                                 } else {
                                     g.setColor(Color.BLACK);
                                 }
-                                g.fillRect(i * tamaño, j * tamaño,tamaño,tamaño);
+                                g.fillRect(j * tamaño, i * tamaño, tamaño, tamaño);
+                                
                             }
                         }
                         canvas.getBufferStrategy().show();

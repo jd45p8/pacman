@@ -197,7 +197,7 @@ public class Menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel container;
+    public javax.swing.JPanel container;
     private javax.swing.JLabel exitSelector;
     private javax.swing.JLabel exitText;
     private javax.swing.JPanel selectpanel;

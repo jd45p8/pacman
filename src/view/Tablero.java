@@ -29,14 +29,15 @@ public class Tablero extends JFrame{
     }
 
     private void initComponents() {
-        this.setSize(menuController.menu.getWidth(), menuController.menu.getHeight());
+        this.setSize(menuController.menu.getSize());
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLayout(null);
         
-        canvas = new Canvas();
-        canvas.setSize(this.getSize());
+        canvas = new Canvas();        
+        canvas.setSize(menuController.menu.container.getSize());
         this.add(canvas);
+        
         
         tableroController.level = 0;
     }
