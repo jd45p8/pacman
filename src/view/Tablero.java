@@ -11,12 +11,14 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import controller.menuController;
 import controller.tableroController;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import model.CanvasMap;
 
 /**
  *
@@ -27,36 +29,29 @@ public class Tablero extends JFrame {
     /**
      * Es el canvas donde se dibujará el mapa.
      */
-    public Canvas canvas;
+    public CanvasMap canvas;
 
     /**
      * Es la clase que contendrá el espacio de juego y sus componentes.
      */
     public Tablero() {
         initComponents();
-        tableroController.addDrawMapa(canvas);
-        this.setVisible(true);
-        tableroController.drawTread.start();
+
     }
 
     private void initComponents() {
-        this.setSize(menuController.menu.getWidth() + 40, menuController.menu.getHeight() + 40);
+        this.setSize(menuController.menu.getWidth(), menuController.menu.getHeight());
+        this.setMinimumSize(new Dimension(menuController.menu.getWidth(), menuController.menu.getHeight()));
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLayout(null);
-
-        JButton button = new JButton();
-        button.setSize(50, 30);
-        button.setText("Next");
-        this.add(button);
-        button.setAction(next);
-
-        canvas = new Canvas();
-        canvas.setSize(this.getWidth(), this.getHeight() - 29);
-        this.add(canvas);
+        this.setVisible(true);
+        
+        tableroController.leerMapas();
+        canvas = new CanvasMap(this);        
 
         tableroController.level = 0;
-        //this.addComponentListener(componentListener);
+        this.addComponentListener(componentListener);
     }
 
     Action next = new AbstractAction() {
@@ -72,15 +67,11 @@ public class Tablero extends JFrame {
     ComponentListener componentListener = new ComponentListener() {
         @Override
         public void componentResized(ComponentEvent e) {
-            tableroController.drawTread.stop();
-            tableroController.tablero.removeAll();
-            canvas = new Canvas();
-            canvas.setSize(tableroController.tablero.getWidth(), tableroController.tablero.getHeight() - 29);
-            tableroController.tablero.add(canvas);
-            tableroController.addDrawMapa(canvas);
-            tableroController.drawTread.start();
-            tableroController.tablero.addNotify();
-            System.out.println(tableroController.tablero.getWidth() + " " + tableroController.tablero.getHeight());
+            canvas.drawThread.interrupt();
+            tableroController.tablero.remove(canvas);
+            canvas = new CanvasMap(tableroController.tablero);
+            if(tableroController.tablero.isDisplayable() && canvas.isDisplayable() )
+                canvas.drawThread.start();
         }
 
         @Override

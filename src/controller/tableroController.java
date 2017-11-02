@@ -1,22 +1,14 @@
 package controller;
 
-import com.sun.javafx.collections.MapAdapterChange;
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Graphics2D;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import view.Tablero;
 
@@ -35,16 +27,21 @@ public class tableroController {
      * Es el tablero donde se dibuja el juego.
      */
     public static Tablero tablero;
-
+    
     /**
-     * Es el hilo sobre el cual se ejecuta el dibujado del mapa.
+     * Altura del banner superior del tablero
      */
-    public static Thread drawTread;
-
+    public static int top = 40;
+    
     /**
+     * Altura del banner inferior del tablero
+     */
+    public static int down = 30;
+
+     /**
      * Es el ArrayList que contiene los mapas del juego.
      */
-    static ArrayList<int[][]> mapas = new ArrayList<>();
+    public static ArrayList<int[][]> mapas = new ArrayList<>();
 
     /**
      * Es el nivel donde se encuentra el jugador.
@@ -55,18 +52,9 @@ public class tableroController {
      * Es el tamaño de los mapas del tablero en número de elementos por fila y
      * columna.
      */
-    public static int n = 30;
+    public static int nX = 25;
+    public static int nY = 15;
 
-    /**
-     * Tamaño de los bloques en x
-     */
-    public static int tamañoX;
-    
-    /**
-     * Tamaño de los bloques en y
-     */
-    public static int tamañoY;
-    
     /**
      * Porcentaje del tablero cubierto por bloques
      */
@@ -80,13 +68,13 @@ public class tableroController {
         int k = 0;
 
         while (k <= numMapas) {
-            int mapa[][] = new int[n][n];
+            int mapa[][] = new int[nY][nX];
             int cubierto = 0;
             Random rd = new Random();
 
-            for (int i = 0; i < n; i++) {
-                for (int j = 0; j < n; j++) {
-                    if (i == 0 || j == n - 1 || j == 0 || i == n - 1) {
+            for (int i = 0; i < nY; i++) {
+                for (int j = 0; j < nX; j++) {
+                    if (i == 0 || j == nX - 1 || j == 0 || i == nY - 1) {
                         mapa[i][j] = 1;
                         cubierto++;
                     } else {
@@ -96,9 +84,9 @@ public class tableroController {
             }
 
             int i, j;
-            while (cubierto < n * n * bloqPercent) {
-                i = rd.nextInt(n);
-                j = rd.nextInt(n);
+            while (cubierto < nY * nX * bloqPercent) {
+                i = rd.nextInt(nY);
+                j = rd.nextInt(nX);
                 if (mapa[i][j] == 0) {
                     mapa[i][j] = 1;
                     cubierto++;
@@ -157,7 +145,7 @@ public class tableroController {
                 }
 
                 if (!inicio) {
-                    inicio = true;                    
+                    inicio = true;
                 } else if (!fin) {
                     fin = true;
                 }
@@ -195,55 +183,4 @@ public class tableroController {
 
     }
 
-    /**
-     * Añade el hilo para el dibujado del mapa
-     */
-    public static void addDrawMapa(Canvas canvas) {
-        leerMapas();
-        drawTread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    canvas.createBufferStrategy(2);
-                    Graphics2D g = (Graphics2D) canvas.getBufferStrategy().getDrawGraphics();                    
-                    while (true) {    
-                        int[][] mapa = mapas.get(level);
-                        g.setColor(Color.BLACK);
-                        g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-                        
-                        int cant = 0;                        
-                        while (true) { 
-                            try {
-                                if(mapa[cant][0] != Integer.MAX_VALUE){
-                                    cant++;
-                                }
-                            } catch (ArrayIndexOutOfBoundsException e) {
-                                break;
-                            }                            
-                        }
-                        
-                        tamañoX = canvas.getWidth() / cant;
-                        tamañoY = canvas.getHeight() / mapa[0].length;
-                        
-                        for (int i = 0; i < mapa[0].length; i++) {
-                            for (int j = 0; j < cant; j++) {
-                                if (mapa[j][i] == 0) {
-                                    g.setColor(Color.WHITE);
-                                } else {
-                                    g.setColor(Color.BLACK);
-                                }
-                                g.fillRect(j * tamañoX, i * tamañoY, tamañoX, tamañoY);
-
-                            }
-                        }
-                        canvas.getBufferStrategy().show();
-                        Thread.sleep(20);                        
-                    }
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(tableroController.class
-                            .getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-    }
 }

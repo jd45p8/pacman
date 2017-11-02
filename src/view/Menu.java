@@ -22,7 +22,8 @@ public class Menu extends javax.swing.JFrame {
     public Menu() {
         initComponents();
         this.setLocationRelativeTo(null);
-        menuController.menu = this;
+        menuController.menu = this;        
+       
     }
 
     /**
