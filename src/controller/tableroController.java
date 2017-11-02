@@ -1,5 +1,6 @@
 package controller;
 
+import com.sun.javafx.collections.MapAdapterChange;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -56,6 +57,16 @@ public class tableroController {
      */
     public static int n = 30;
 
+    /**
+     * Tamaño de los bloques en x
+     */
+    public static int tamañoX;
+    
+    /**
+     * Tamaño de los bloques en y
+     */
+    public static int tamañoY;
+    
     /**
      * Porcentaje del tablero cubierto por bloques
      */
@@ -135,19 +146,46 @@ public class tableroController {
         try {
             String line = rd.readLine();
             int i = 0;
-            int mapa[][] = new int[n][n];
+            ArrayList<int[]> mapa = new ArrayList<>();
+            boolean inicio = false, fin = false;
 
             while (line != null) {
                 String mapaS[] = line.substring(1, line.length() - 1).split(", ");
-                for (int j = 0; j < n; j++) {
-                    mapa[j][i] = Integer.parseInt(mapaS[j]);
+                mapa.add(new int[mapaS.length]);
+                for (int j = 0; j < mapaS.length; j++) {
+                    mapa.get(i)[j] = Integer.parseInt(mapaS[j]);
+                }
+
+                if (!inicio) {
+                    inicio = true;                    
+                } else if (!fin) {
+                    fin = true;
+                }
+
+                for (int elem : mapa.get(i)) {
+                    if (elem == 0) {
+                        if (inicio && !fin) {
+                            inicio = false;
+                        } else if (inicio && fin) {
+                            fin = false;
+                        }
+                        break;
+                    }
                 }
 
                 i++;
-                if (i == n) {
-                    mapas.add(mapa);
-                    mapa = new int[n][n];
+                if (inicio && fin) {
+                    int[][] mapaI = new int[mapaS.length][i];
+                    for (int j = 0; j < i; j++) {
+                        for (int k = 0; k < mapaS.length; k++) {
+                            mapaI[k][j] = mapa.get(j)[k];
+                        }
+                    }
+                    mapa.removeAll(mapa);
+                    mapas.add(mapaI);
                     i = 0;
+                    inicio = false;
+                    fin = false;
                 }
                 line = rd.readLine();
             }
@@ -167,26 +205,39 @@ public class tableroController {
             public void run() {
                 try {
                     canvas.createBufferStrategy(2);
-                    Graphics2D g = (Graphics2D) canvas.getBufferStrategy().getDrawGraphics();
-                    while (true) {
+                    Graphics2D g = (Graphics2D) canvas.getBufferStrategy().getDrawGraphics();                    
+                    while (true) {    
                         int[][] mapa = mapas.get(level);
-                        int tamaño = canvas.getHeight() / n;
                         g.setColor(Color.BLACK);
                         g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-
-                        for (int i = 0; i < n; i++) {
-                            for (int j = 0; j < n; j++) {
+                        
+                        int cant = 0;                        
+                        while (true) { 
+                            try {
+                                if(mapa[cant][0] != Integer.MAX_VALUE){
+                                    cant++;
+                                }
+                            } catch (ArrayIndexOutOfBoundsException e) {
+                                break;
+                            }                            
+                        }
+                        
+                        tamañoX = canvas.getWidth() / cant;
+                        tamañoY = canvas.getHeight() / mapa[0].length;
+                        
+                        for (int i = 0; i < mapa[0].length; i++) {
+                            for (int j = 0; j < cant; j++) {
                                 if (mapa[j][i] == 0) {
                                     g.setColor(Color.WHITE);
                                 } else {
                                     g.setColor(Color.BLACK);
                                 }
-                                g.fillRect(j * tamaño, i * tamaño, tamaño, tamaño);
-                                
+                                g.fillRect(j * tamañoX, i * tamañoY, tamañoX, tamañoY);
+
                             }
                         }
                         canvas.getBufferStrategy().show();
-                        Thread.sleep(20);
+                        Thread.sleep(20);                        
                     }
                 } catch (InterruptedException ex) {
                     Logger.getLogger(tableroController.class
