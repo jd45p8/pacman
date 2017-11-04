@@ -50,7 +50,7 @@ public class CanvasMap extends Canvas {
                         int[][] mapa = tableroController.mapas.get(tableroController.level);
                         g.setColor(Color.BLACK);
                         g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-                        
+
                         g.setColor(Color.BLUE);
                         g.fillRect(0, tableroController.top, canvas.getWidth(), canvas.getHeight() - tableroController.top - tableroController.down);
 
@@ -77,6 +77,9 @@ public class CanvasMap extends Canvas {
 
                             }
                         }
+                        g.setColor(Color.YELLOW);
+                        g.fillOval(tableroController.tablero.pacman.position.x,
+                                tableroController.tablero.pacman.position.y, tamañoX, tamañoY);
                         canvas.getBufferStrategy().show();
                         Thread.sleep(20);
                     }
