@@ -60,6 +60,7 @@ public class Tablero extends JFrame {
         pacman = new Player(new Point(1, 1));
 
         tableroController.level = 0;
+        tableroController.score = 0;
     }
 
     /**

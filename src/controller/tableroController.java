@@ -34,10 +34,20 @@ public class tableroController {
     public static int top = 40;
     
     /**
-     * Altura del banner inferior del tablero
+     * Distancia extra del borde superior
+     */
+    public static int extraTop = 0;
+    
+    /**
+     * Altura del banner inferior del tablero.
      */
     public static int down = 30;
-
+    
+    /**
+     * Distancia del borde derecho del tablero.
+     */
+    public static int rigth;
+        
      /**
      * Es el ArrayList que contiene los mapas del juego.
      */
@@ -47,7 +57,12 @@ public class tableroController {
      * Es el nivel donde se encuentra el jugador.
      */
     public static int level;
-
+    
+    /**
+     * Es el puntaje que ha acumulado el jugador en el juego.
+     */
+    public static int score;
+    
     /**
      * Es el tamaño de los mapas del tablero en número de elementos por fila y
      * columna.
