@@ -136,4 +136,61 @@ public class Nodo {
         return null;
     }
 
+    /**
+     * Busca un nodo en un grafo de acuerdo con una ubicación dada para sus
+     * coordenadas y unas relaciones de escala que hacen posible encontrar el
+     * mismo.
+     *
+     * @param graph es el grafo en el que se realizará la búsqueda.
+     * @param location es la ubicación del punto donde se buscará el nodo en el
+     * grafo.
+     * @param scaleX es la escala del punto en el grafo con respecto a un punto
+     * con dimensiones en x iguales a 1.
+     * @param extraX es la desviación en x del punto a casusa del dibujado.
+     * @param scaleY es la escala del punto en el grafo con respecto a un punto
+     * con dimensiones en y iguales a 1.
+     * @param extraY es la desviación en y del punto a casusa del dibujado.
+     * @return retorna el nodo buscado si fué encontrado.
+     */
+    public static Nodo searchInGraph(ArrayList<Nodo> graph, Point location, int scaleX, int extraX, int scaleY, int extraY) {
+        for (Nodo nodo : graph) {
+            if (location.x >= nodo.location.x * scaleX + extraX && location.x < nodo.location.x * scaleX + scaleX + extraX) {
+                if (location.y >= nodo.location.y * scaleY + extraY && location.y < nodo.location.y * scaleY + scaleY + extraY) {
+                    return nodo;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Determina un objeto de magnnitudes conocidas puede entrar en un nodo(si
+     * existe) asociado a un punto dado que se encuentra en él.
+     *
+     * @param graph es el grafo en el que se realizará la búsqueda.
+     * @param location es la ubicación del punto donde se buscará el nodo en el
+     * grafo.
+     * @param scaleX es la escala del punto en el grafo con respecto a un punto
+     * con dimensiones en x iguales a 1.
+     * @param extraX es la desviación en x del punto a casusa del dibujado.
+     * @param scaleY es la escala del punto en el grafo con respecto a un punto
+     * con dimensiones en y iguales a 1.
+     * @param extraY es la desviación en y del punto a casusa del dibujado.
+     * @return retorna el nodo relacionado con el punto si los puntos que
+     * definen las esquinas del objeto se encuentran en el grafo.
+     */
+    public static Nodo canMoveInGraph(ArrayList<Nodo> graph, Point location, int scaleX, int extraX, int scaleY, int extraY) {
+        Nodo q = searchInGraph(graph, new Point(location.x + 1, location.y + 1), scaleX, extraX, scaleY, extraY);
+        if (q != null && searchInGraph(graph, new Point(location.x + scaleX - 2, location.y), scaleX, extraX, scaleY, extraY) == null) {
+            return null;
+        }
+        if (q != null && searchInGraph(graph, new Point(location.x, location.y + scaleY - 2), scaleX, extraX, scaleY, extraY) == null) {
+            return null;
+        }
+        if (q != null && searchInGraph(graph, new Point(location.x + scaleX - 2, location.y + scaleY - 2), scaleX, extraX, scaleY, extraY) == null) {
+            return null;
+        }
+        return q;
+    }
+
 }

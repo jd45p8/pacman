@@ -10,6 +10,7 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import javax.swing.JFrame;
 
 /**
@@ -22,12 +23,12 @@ public class CanvasMap extends Canvas {
     /**
      * Tamaño de los bloques en x
      */
-    public static int tamañoX;
+    public static int tamX;
 
     /**
      * Tamaño de los bloques en y
      */
-    public static int tamañoY;
+    public static int tamY;
 
     public CanvasMap(JFrame padre) {
         this.setSize(padre.getWidth(), padre.getHeight() - 29);
@@ -64,10 +65,10 @@ public class CanvasMap extends Canvas {
                             }
                         }
 
-                        tamañoY = (canvas.getHeight() - tableroController.top - tableroController.down) / mapa[0].length;
-                        tamañoX = tamañoY;
-                        tableroController.rigth = (canvas.getWidth() - tamañoX * cant) / 2;
-                        tableroController.extraTop = (canvas.getHeight() - tamañoY * mapa[0].length - tableroController.top - tableroController.down) / 2;
+                        tamY = (canvas.getHeight() - tableroController.top - tableroController.down) / mapa[0].length;
+                        tamX = tamY;
+                        tableroController.rigth = (canvas.getWidth() - tamX * cant) / 2;
+                        tableroController.extraTop = (canvas.getHeight() - tamY * mapa[0].length - tableroController.top - tableroController.down) / 2;
 
                         for (int i = 0; i < mapa[0].length; i++) {
                             for (int j = 0; j < cant; j++) {
@@ -76,34 +77,43 @@ public class CanvasMap extends Canvas {
                                 } else {
                                     g.setColor(Color.BLUE);
                                 }
-                                g.fillRect(tableroController.rigth + j * tamañoX, tableroController.top + i * tamañoY + tableroController.extraTop, tamañoX, tamañoY);
+                                g.fillRect(tableroController.rigth + j * tamX, tableroController.top + i * tamY + tableroController.extraTop, tamX, tamY);
 
                             }
                         }
 
                         g.setColor(Color.WHITE);
-                        g.setFont(new Font("Rockwell", Font.PLAIN, 13 + tamañoY / 4));
+                        g.setFont(new Font("Rockwell", Font.PLAIN, 13 + tamY / 4));
                         g.drawString("Score: " + tableroController.score, tableroController.rigth, tableroController.top - 10);
-                        g.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 15 + tamañoY / 4));
+                        g.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 15 + tamY / 4));
                         String name = "PAC-MAN";
-                        g.drawString(name, canvas.getWidth() - tableroController.rigth - name.length() * (10 + tamañoY / 4), tableroController.top - 12);
-                        g.setFont(new Font("Rockwell", Font.PLAIN, 6 + tamañoY / 4));
-                        g.drawString("José David Polo", canvas.getWidth() - tableroController.rigth - name.length() * (10 + tamañoY / 4), tableroController.top - 12 + (3 + tamañoY / 4));
-                        g.setFont(new Font("Rockwell", Font.PLAIN, 12 + tamañoY / 4));
+                        g.drawString(name, canvas.getWidth() - tableroController.rigth - name.length() * (10 + tamY / 4), tableroController.top - 12);
+                        g.setFont(new Font("Rockwell", Font.PLAIN, 6 + tamY / 4));
+                        g.drawString("José David Polo", canvas.getWidth() - tableroController.rigth - name.length() * (10 + tamY / 4), tableroController.top - 12 + (3 + tamY / 4));
+                        g.setFont(new Font("Rockwell", Font.PLAIN, 12 + tamY / 4));
                         g.drawString("Lives: " + tableroController.score, tableroController.rigth, canvas.getHeight() - 12);
 
                         for (Nodo nodo : tableroController.graph) {
                             for (Nodo adyacente : nodo.Adyacentes) {
-                                g.drawLine(tableroController.rigth + nodo.location.x * tamañoX,
-                                        tableroController.top + tableroController.extraTop + nodo.location.y * tamañoY,
-                                        tableroController.rigth + adyacente.location.x * tamañoX, 
-                                        tableroController.top + tableroController.extraTop + adyacente.location.y * tamañoY);
+                                g.drawLine(tableroController.rigth + nodo.location.x * tamX,
+                                        tableroController.top + tableroController.extraTop + nodo.location.y * tamY,
+                                        tableroController.rigth + adyacente.location.x * tamX,
+                                        tableroController.top + tableroController.extraTop + adyacente.location.y * tamY);
                             }
+                        }
+
+                        g.setColor(Color.red);
+                        Nodo q = Nodo.canMoveInGraph(tableroController.graph,
+                                tableroController.tablero.pacman.position,
+                                tamX, tableroController.rigth,
+                                tamY, tableroController.top + tableroController.extraTop);
+                        if (q != null) {
+                            g.fillOval(tableroController.rigth + q.location.x * tamX, tableroController.top + tableroController.extraTop + q.location.y * tamY, 5, 5);
                         }
 
                         g.setColor(Color.YELLOW);
                         g.fillOval(tableroController.tablero.pacman.position.x,
-                                tableroController.tablero.pacman.position.y, tamañoX, tamañoY);
+                                tableroController.tablero.pacman.position.y, tamX, tamY);
                         canvas.getBufferStrategy().show();
                         Thread.sleep(20);
                     }
