@@ -5,8 +5,10 @@
  */
 package model;
 
+import controller.tableroController;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  *
@@ -14,6 +16,7 @@ import java.util.ArrayList;
  */
 public class Nodo {
 
+    public boolean objetive;
     public Point location;
     int id;
     ArrayList<Nodo> Adyacentes;
@@ -22,6 +25,7 @@ public class Nodo {
         this.location = location;
         this.id = id;
         Adyacentes = new ArrayList<>();
+        objetive = false;
     }
 
     /**
@@ -116,6 +120,19 @@ public class Nodo {
                 }
             }
         }
+        Random rd = new Random();
+        int i = 0;
+        for (Nodo nodo : graph) {
+            int k = rd.nextInt(graph.size());
+            if (!graph.get(k).objetive) {
+                graph.get(k).objetive = true;
+                i++;
+            }
+            if (i == 10) {
+                break;
+            }
+        }
+
         return graph;
     }
 
@@ -180,14 +197,14 @@ public class Nodo {
      * definen las esquinas del objeto se encuentran en el grafo.
      */
     public static Nodo canMoveInGraph(ArrayList<Nodo> graph, Point location, int scaleX, int extraX, int scaleY, int extraY) {
-        Nodo q = searchInGraph(graph, new Point(location.x + 1, location.y), scaleX, extraX, scaleY, extraY);
-        if (q != null && searchInGraph(graph, new Point(location.x + scaleX - 2, location.y), scaleX, extraX, scaleY, extraY) == null) {
+        Nodo q = searchInGraph(graph, new Point(location.x, location.y), scaleX, extraX, scaleY, extraY);
+        if (q != null && searchInGraph(graph, new Point(location.x + scaleX - Player.VEL, location.y), scaleX, extraX, scaleY, extraY) == null) {
             return null;
         }
-        if (q != null && searchInGraph(graph, new Point(location.x, location.y + scaleY - 2), scaleX, extraX, scaleY, extraY) == null) {
+        if (q != null && searchInGraph(graph, new Point(location.x, location.y + scaleY - Player.VEL), scaleX, extraX, scaleY, extraY) == null) {
             return null;
         }
-        if (q != null && searchInGraph(graph, new Point(location.x + scaleX - 2, location.y + scaleY - 2), scaleX, extraX, scaleY, extraY) == null) {
+        if (q != null && searchInGraph(graph, new Point(location.x + scaleX - Player.VEL, location.y + scaleY - Player.VEL), scaleX, extraX, scaleY, extraY) == null) {
             return null;
         }
         return q;

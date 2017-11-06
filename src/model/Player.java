@@ -20,19 +20,19 @@ public class Player {
     }
     
     public void up(){
-        position.y-=VEL;        
+        position.y-=VEL - CanvasMap.tamY/50;        
     }
     
     public void down(){
-        position.y+=VEL;
+        position.y+=VEL + CanvasMap.tamY/50;
     }
     
     public void left(){
-        position.x-=VEL;
+        position.x-=VEL - CanvasMap.tamX/50;
     }
     
     public void rigth(){
-        position.x+=VEL;
+        position.x+=VEL + CanvasMap.tamX/50;
     }
 
     public Point getPosition() {

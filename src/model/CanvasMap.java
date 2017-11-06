@@ -91,27 +91,39 @@ public class CanvasMap extends Canvas {
                         g.setFont(new Font("Rockwell", Font.PLAIN, 6 + tamY / 4));
                         g.drawString("José David Polo", canvas.getWidth() - tableroController.rigth - name.length() * (10 + tamY / 4), tableroController.top - 12 + (3 + tamY / 4));
                         g.setFont(new Font("Rockwell", Font.PLAIN, 12 + tamY / 4));
-                        g.drawString("Lives: " + tableroController.score, tableroController.rigth, canvas.getHeight() - 12);
-                        
-                        /**
+                        g.drawString("Lives: " + 0, tableroController.rigth, canvas.getHeight() - 12);
+
+//                        for (Nodo nodo : tableroController.graph) {
+//                            for (Nodo adyacente : nodo.Adyacentes) {
+//                                g.drawLine(tableroController.rigth + nodo.location.x * tamX,
+//                                        tableroController.top + tableroController.extraTop + nodo.location.y * tamY,
+//                                        tableroController.rigth + adyacente.location.x * tamX,
+//                                        tableroController.top + tableroController.extraTop + adyacente.location.y * tamY);
+//                            }
+//                        }
+//                        g.setColor(Color.red);
+//                        Nodo q
+//                                = Nodo.canMoveInGraph(tableroController.graph,
+//                                        tableroController.tablero.pacman.position, tamX,
+//                                        tableroController.rigth, tamY, tableroController.top
+//                                        + tableroController.extraTop);
+//                        if (q != null) {
+//                            g.fillOval(tableroController.rigth + q.location.x
+//                                    * tamX, tableroController.top
+//                                    + tableroController.extraTop + q.location.y * tamY, 5,
+//                                    5);
+//                        }
                         for (Nodo nodo : tableroController.graph) {
-                            for (Nodo adyacente : nodo.Adyacentes) {
-                                g.drawLine(tableroController.rigth + nodo.location.x * tamX,
-                                        tableroController.top + tableroController.extraTop + nodo.location.y * tamY,
-                                        tableroController.rigth + adyacente.location.x * tamX,
-                                        tableroController.top + tableroController.extraTop + adyacente.location.y * tamY);
+                            if (nodo.objetive) {
+                                g.setColor(Color.WHITE);
+                                g.drawOval(nodo.location.x * tamX + tableroController.rigth + tamX / 4, 
+                                        nodo.location.y * tamY + tableroController.top + tableroController.extraTop + tamY/4, 
+                                        tamX / 2, tamY / 2);
+                                g.fillOval(nodo.location.x * tamX + tableroController.rigth + tamX / 4, 
+                                        nodo.location.y * tamY + tableroController.top + tableroController.extraTop + tamY/4, 
+                                        tamX / 2, tamY / 2);
                             }
                         }
-                        
-                        g.setColor(Color.red);
-                        Nodo q = Nodo.canMoveInGraph(tableroController.graph,
-                                tableroController.tablero.pacman.position,
-                                tamX, tableroController.rigth,
-                                tamY, tableroController.top + tableroController.extraTop);
-                        if (q != null) {
-                            g.fillOval(tableroController.rigth + q.location.x * tamX, tableroController.top + tableroController.extraTop + q.location.y * tamY, 5, 5);
-                        }
-                        */
 
                         g.setColor(Color.YELLOW);
                         g.fillOval(tableroController.tablero.pacman.position.x,
