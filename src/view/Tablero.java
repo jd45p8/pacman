@@ -52,11 +52,10 @@ public class Tablero extends JFrame {
         tableroController.leerMapas();
         canvas = new CanvasMap(this);
 
-        pacman = new Player(new Point(1, 1));
-
         tableroController.level = 0;
         tableroController.score = 0;
         tableroController.graph = Nodo.fromArrayToGraph(tableroController.mapas.get(0));
+        pacman = new Player(new Point(1, 1));
     }
 
     /**
@@ -70,6 +69,8 @@ public class Tablero extends JFrame {
             canvas = new CanvasMap(tableroController.tablero);
             if (tableroController.tablero.isDisplayable() && canvas.isDisplayable()) {
                 canvas.drawThread.start();
+                pacman.position =  new Point(tableroController.graph.get(50).location.x * canvas.tamX,
+                tableroController.graph.get(50).location.y * canvas.tamY);
             }
         }
 
@@ -101,17 +102,41 @@ public class Tablero extends JFrame {
         @Override
         public void keyPressed(KeyEvent e) {
             if (e.getKeyCode() == KeyEvent.VK_UP) {
-                pacman.up();
+                if (Nodo.canMoveInGraph(tableroController.graph,
+                        new Point(tableroController.tablero.pacman.getPosition().x,
+                                tableroController.tablero.pacman.getPosition().y - Player.VEL),
+                        tableroController.tablero.canvas.tamX, tableroController.rigth,
+                        tableroController.tablero.canvas.tamY, tableroController.top + tableroController.extraTop) != null) {
+                    pacman.up();
+                }
             }
             if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-                pacman.down();
+                if (Nodo.canMoveInGraph(tableroController.graph,
+                        new Point(tableroController.tablero.pacman.getPosition().x,
+                                tableroController.tablero.pacman.getPosition().y + Player.VEL),
+                        tableroController.tablero.canvas.tamX, tableroController.rigth,
+                        tableroController.tablero.canvas.tamY, tableroController.top + tableroController.extraTop) != null) {
+                    pacman.down();
+                }
             }
             if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                pacman.left();
+                if (Nodo.canMoveInGraph(tableroController.graph,
+                        new Point(tableroController.tablero.pacman.getPosition().x - Player.VEL,
+                                tableroController.tablero.pacman.getPosition().y),
+                        tableroController.tablero.canvas.tamX, tableroController.rigth,
+                        tableroController.tablero.canvas.tamY, tableroController.top + tableroController.extraTop) != null) {
+                    pacman.left();
+                }
             }
             if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                pacman.rigth();
-            }            
+                if (Nodo.canMoveInGraph(tableroController.graph,
+                        new Point(tableroController.tablero.pacman.getPosition().x + Player.VEL,
+                                tableroController.tablero.pacman.getPosition().y),
+                        tableroController.tablero.canvas.tamX, tableroController.rigth,
+                        tableroController.tablero.canvas.tamY, tableroController.top + tableroController.extraTop) != null) {
+                    pacman.rigth();
+                }
+            }
         }
 
         @Override

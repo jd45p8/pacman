@@ -12,7 +12,7 @@ import java.awt.Point;
  * @author jd45
  */
 public class Player {
-    Point position;
+    public Point position;
     public static final int VEL = 2;    
 
     public Player(Point position) {
@@ -34,5 +34,14 @@ public class Player {
     public void rigth(){
         position.x+=VEL;
     }
+
+    public Point getPosition() {
+        return position;
+    }
+
+    public void setPosition(Point position) {
+        this.position = position;
+    }
+    
     
 }

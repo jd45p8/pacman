@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class Nodo {
 
-    Point location;
+    public Point location;
     int id;
     ArrayList<Nodo> Adyacentes;
 
@@ -180,7 +180,7 @@ public class Nodo {
      * definen las esquinas del objeto se encuentran en el grafo.
      */
     public static Nodo canMoveInGraph(ArrayList<Nodo> graph, Point location, int scaleX, int extraX, int scaleY, int extraY) {
-        Nodo q = searchInGraph(graph, new Point(location.x + 1, location.y + 1), scaleX, extraX, scaleY, extraY);
+        Nodo q = searchInGraph(graph, new Point(location.x + 1, location.y), scaleX, extraX, scaleY, extraY);
         if (q != null && searchInGraph(graph, new Point(location.x + scaleX - 2, location.y), scaleX, extraX, scaleY, extraY) == null) {
             return null;
         }
