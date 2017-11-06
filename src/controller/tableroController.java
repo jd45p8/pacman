@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 import javax.swing.JFileChooser;
+import model.Nodo;
 import view.Tablero;
 
 /*
@@ -53,6 +54,11 @@ public class tableroController {
      */
     public static ArrayList<int[][]> mapas = new ArrayList<>();
 
+    /**
+     * Es el grafo con los puntos accesibles del mapa.
+     */
+    public static ArrayList<Nodo> graph = new ArrayList<>();
+    
     /**
      * Es el nivel donde se encuentra el jugador.
      */

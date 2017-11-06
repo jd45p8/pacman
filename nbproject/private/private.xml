@@ -2,18 +2,18 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="2">
         <file>
-            <url>src/model/CanvasMap.java</url>
-            <bookmark id="2">
+            <url>src/controller/tableroController.java</url>
+            <bookmark id="1">
                 <name/>
-                <line>36</line>
+                <line>51</line>
                 <key/>
             </bookmark>
         </file>
         <file>
-            <url>src/controller/tableroController.java</url>
-            <bookmark id="1">
+            <url>src/model/CanvasMap.java</url>
+            <bookmark id="2">
                 <name/>
-                <line>40</line>
+                <line>36</line>
                 <key/>
             </bookmark>
         </file>
@@ -22,11 +22,11 @@
         <group>
             <file>file:/home/jd45/NetBeansProjects/Pacman/src/controller/tableroController.java</file>
             <file>file:/home/jd45/NetBeansProjects/Pacman/src/model/Player.java</file>
-            <file>file:/home/jd45/NetBeansProjects/Pacman/src/controller/menuController.java</file>
+            <file>file:/home/jd45/NetBeansProjects/Pacman/src/model/Nodo.java</file>
             <file>file:/home/jd45/NetBeansProjects/Pacman/src/model/CanvasMap.java</file>
             <file>file:/home/jd45/NetBeansProjects/Pacman/src/model/Ghost.java</file>
-            <file>file:/home/jd45/NetBeansProjects/Pacman/src/view/Tablero.java</file>
             <file>file:/home/jd45/NetBeansProjects/Pacman/src/view/Menu.java</file>
+            <file>file:/home/jd45/NetBeansProjects/Pacman/src/view/Tablero.java</file>
         </group>
     </open-files>
 </project-private>

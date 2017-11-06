@@ -5,23 +5,18 @@
  */
 package view;
 
-import java.awt.Canvas;
 import java.awt.EventQueue;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import controller.menuController;
 import controller.tableroController;
 import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import model.CanvasMap;
+import model.Nodo;
 import model.Player;
 
 /**
@@ -61,6 +56,7 @@ public class Tablero extends JFrame {
 
         tableroController.level = 0;
         tableroController.score = 0;
+        tableroController.graph = Nodo.fromArrayToGraph(tableroController.mapas.get(0));
     }
 
     /**

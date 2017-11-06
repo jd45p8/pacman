@@ -6,10 +6,8 @@
 package model;
 
 import controller.tableroController;
-import java.awt.BasicStroke;
 import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import javax.swing.JFrame;
@@ -90,9 +88,18 @@ public class CanvasMap extends Canvas {
                         String name = "PAC-MAN";
                         g.drawString(name, canvas.getWidth() - tableroController.rigth - name.length() * (10 + tamañoY / 4), tableroController.top - 12);
                         g.setFont(new Font("Rockwell", Font.PLAIN, 6 + tamañoY / 4));
-                        g.drawString("José David Polo", canvas.getWidth() - tableroController.rigth - name.length() * (10 + tamañoY / 4) , tableroController.top - 12 + (3 + tamañoY / 4));
+                        g.drawString("José David Polo", canvas.getWidth() - tableroController.rigth - name.length() * (10 + tamañoY / 4), tableroController.top - 12 + (3 + tamañoY / 4));
                         g.setFont(new Font("Rockwell", Font.PLAIN, 12 + tamañoY / 4));
                         g.drawString("Lives: " + tableroController.score, tableroController.rigth, canvas.getHeight() - 12);
+
+                        for (Nodo nodo : tableroController.graph) {
+                            for (Nodo adyacente : nodo.Adyacentes) {
+                                g.drawLine(tableroController.rigth + nodo.location.x * tamañoX,
+                                        tableroController.top + tableroController.extraTop + nodo.location.y * tamañoY,
+                                        tableroController.rigth + adyacente.location.x * tamañoX, 
+                                        tableroController.top + tableroController.extraTop + adyacente.location.y * tamañoY);
+                            }
+                        }
 
                         g.setColor(Color.YELLOW);
                         g.fillOval(tableroController.tablero.pacman.position.x,
