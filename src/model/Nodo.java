@@ -197,17 +197,100 @@ public class Nodo {
      * definen las esquinas del objeto se encuentran en el grafo.
      */
     public static Nodo canMoveInGraph(ArrayList<Nodo> graph, Point location, int scaleX, int extraX, int scaleY, int extraY) {
-        Nodo q = searchInGraph(graph, new Point(location.x, location.y), scaleX, extraX, scaleY, extraY);
-        if (q != null && searchInGraph(graph, new Point(location.x + scaleX - Player.VEL, location.y), scaleX, extraX, scaleY, extraY) == null) {
+        Nodo q = searchInGraph(graph, location, scaleX, extraX, scaleY, extraY);
+        if (q != null && searchInGraph(graph, new Point(location.x + scaleX - 2, location.y), scaleX, extraX, scaleY, extraY) == null) {
             return null;
         }
-        if (q != null && searchInGraph(graph, new Point(location.x, location.y + scaleY - Player.VEL), scaleX, extraX, scaleY, extraY) == null) {
+        if (q != null && searchInGraph(graph, new Point(location.x, location.y + scaleY - 2), scaleX, extraX, scaleY, extraY) == null) {
             return null;
         }
-        if (q != null && searchInGraph(graph, new Point(location.x + scaleX - Player.VEL, location.y + scaleY - Player.VEL), scaleX, extraX, scaleY, extraY) == null) {
+        if (q != null && searchInGraph(graph, new Point(location.x + scaleX - 2, location.y + scaleY - 2), scaleX, extraX, scaleY, extraY) == null) {
             return null;
         }
         return q;
+    }
+
+    /**
+     * Determina cuanto puede moverse el usuario en una dirección antes de
+     * colisionar con el grafo en que se mueve.
+     *
+     * @return
+     */
+    public static int howMuchICanMove(ArrayList<Nodo> graph, Point location, int scaleX, int extraX, int scaleY, int extraY, Point direction) {
+        int amount = 0;
+        Nodo menor = null;
+        for (Nodo nodo : graph) {
+            if (menor == null) {
+                menor = nodo;
+                if (direction.x != 0) {
+                    if (direction.x == 1) {
+                        amount = nodo.location.x * scaleX + extraX - location.x;
+                        if ((amount > 0 && amount < Player.VEL) == false) {
+                            nodo = null;
+                            amount = 0;
+                        }
+                    } else {
+                        amount = location.x - nodo.location.x * scaleX + extraX;
+                        if ((amount > 0 && amount < Player.VEL) == false) {
+                            nodo = null;
+                            amount = 0;
+                        }
+                    }
+                } else // Si se moverá en y
+                {
+                    if (direction.y == 1) {
+                        amount = location.y - nodo.location.y * scaleY + extraY;
+                        if ((amount > 0 && amount < Player.VEL) == false) {
+                            nodo = null;
+                            amount = 0;
+                        }
+                    } else {
+                        amount = nodo.location.y * scaleY + extraY - location.y;
+                        if ((amount > 0 && amount < Player.VEL) == false) {
+                            nodo = null;
+                            amount = 0;
+                        }
+                    }
+                }
+            } else //Si se moverá en x
+            {
+                if (direction.x != 0) {
+                    if (direction.x == 1 && nodo.location.x * scaleX + extraX - location.x < menor.location.x * scaleX + extraX - location.x) {
+                        menor = nodo;
+                        amount = nodo.location.x * scaleX + extraX - location.x;
+                        if ((amount > 0 && amount < Player.VEL) == false) {
+                            nodo = null;
+                            amount = 0;
+                        }
+                    } else if (location.x - nodo.location.x * scaleX + extraX < location.x - menor.location.x * scaleX + extraX) {
+                        menor = nodo;
+                        amount = location.x - nodo.location.x * scaleX + extraX;
+                        if ((amount < 0 && amount > Player.VEL) == false) {
+                            nodo = null;
+                            amount = 0;
+                        }
+                    }
+                } else // Si se moverá en y
+                {
+                    if (direction.y == 1 && nodo.location.y * scaleY + extraY - location.y < menor.location.y * scaleY + extraY - location.y) {
+                        menor = nodo;
+                        amount = nodo.location.y * scaleY + extraY - location.y;
+                        if ((amount < 0 && amount > -Player.VEL) == false) {
+                            nodo = null;
+                            amount = 0;
+                        }
+                    } else if (location.y - nodo.location.y * scaleY + extraY < menor.location.y * scaleY + extraY - location.y) {
+                        menor = nodo;
+                        amount = location.y - nodo.location.y * scaleY + extraY;
+                        if ((amount > 0 && amount < Player.VEL) == false) {
+                            nodo = null;
+                            amount = 0;
+                        }
+                    }
+                }
+            }
+        }
+        return amount;
     }
 
 }

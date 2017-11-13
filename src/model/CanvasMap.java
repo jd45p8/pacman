@@ -93,14 +93,14 @@ public class CanvasMap extends Canvas {
                         g.setFont(new Font("Rockwell", Font.PLAIN, 12 + tamY / 4));
                         g.drawString("Lives: " + 0, tableroController.rigth, canvas.getHeight() - 12);
 
-//                        for (Nodo nodo : tableroController.graph) {
-//                            for (Nodo adyacente : nodo.Adyacentes) {
-//                                g.drawLine(tableroController.rigth + nodo.location.x * tamX,
-//                                        tableroController.top + tableroController.extraTop + nodo.location.y * tamY,
-//                                        tableroController.rigth + adyacente.location.x * tamX,
-//                                        tableroController.top + tableroController.extraTop + adyacente.location.y * tamY);
-//                            }
-//                        }
+                        for (Nodo nodo : tableroController.graph) {
+                            for (Nodo adyacente : nodo.Adyacentes) {
+                                g.drawLine(tableroController.rigth + nodo.location.x * tamX,
+                                        tableroController.top + tableroController.extraTop + nodo.location.y * tamY,
+                                        tableroController.rigth + adyacente.location.x * tamX,
+                                        tableroController.top + tableroController.extraTop + adyacente.location.y * tamY);
+                            }
+                        }
 //                        g.setColor(Color.red);
 //                        Nodo q
 //                                = Nodo.canMoveInGraph(tableroController.graph,

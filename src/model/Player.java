@@ -13,26 +13,26 @@ import java.awt.Point;
  */
 public class Player {
     public Point position;
-    public static final int VEL = 2;    
+    public static final int VEL = 8;    
 
     public Player(Point position) {
         this.position = position;
     }
     
-    public void up(){
-        position.y-=VEL - CanvasMap.tamY/50;        
+    public void up(int amount){
+        position.y-=amount;        
     }
     
-    public void down(){
-        position.y+=VEL + CanvasMap.tamY/50;
+    public void down(int amount){
+        position.y+=amount;
     }
     
-    public void left(){
-        position.x-=VEL - CanvasMap.tamX/50;
+    public void left(int amount){
+        position.x-=amount;
     }
     
-    public void rigth(){
-        position.x+=VEL + CanvasMap.tamX/50;
+    public void rigth(int amount){
+        position.x+=amount;
     }
 
     public Point getPosition() {

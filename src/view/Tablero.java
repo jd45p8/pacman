@@ -114,7 +114,13 @@ public class Tablero extends JFrame {
                             tableroController.tablero.canvas.tamX, tableroController.rigth,
                             tableroController.tablero.canvas.tamY, tableroController.top + tableroController.extraTop);
                     if (q != null) {
-                        pacman.up();
+                        pacman.up(Player.VEL);
+                        System.out.println("Mi culpa " + pacman.position);
+                    } else {
+                        pacman.up(Nodo.howMuchICanMove(tableroController.graph, pacman.getPosition(),
+                                tableroController.tablero.canvas.tamX, tableroController.rigth,
+                                tableroController.tablero.canvas.tamY, tableroController.top + tableroController.extraTop, new Point(0, 1)));
+                        System.out.println("Recalculado");
                     }
                     break;
                 }
@@ -125,7 +131,13 @@ public class Tablero extends JFrame {
                             tableroController.tablero.canvas.tamX, tableroController.rigth,
                             tableroController.tablero.canvas.tamY, tableroController.top + tableroController.extraTop);
                     if (q != null) {
-                        pacman.down();
+                        pacman.down(Player.VEL);
+                        System.out.println("Mi culpa " + pacman.position);
+                    } else {
+                        pacman.down(Nodo.howMuchICanMove(tableroController.graph, pacman.getPosition(),
+                                tableroController.tablero.canvas.tamX, tableroController.rigth,
+                                tableroController.tablero.canvas.tamY, tableroController.top + tableroController.extraTop, new Point(0, -1)));
+                        System.out.println("Recalculado");
                     }
                     break;
                 }
@@ -136,7 +148,13 @@ public class Tablero extends JFrame {
                             tableroController.tablero.canvas.tamX, tableroController.rigth,
                             tableroController.tablero.canvas.tamY, tableroController.top + tableroController.extraTop);
                     if (q != null) {
-                        pacman.left();
+                        pacman.left(Player.VEL);
+                        System.out.println("Mi culpa " + pacman.position);
+                    } else {
+                        pacman.up(Nodo.howMuchICanMove(tableroController.graph, pacman.getPosition(),
+                                tableroController.tablero.canvas.tamX, tableroController.rigth,
+                                tableroController.tablero.canvas.tamY, tableroController.top + tableroController.extraTop, new Point(-1, 0)));
+                        System.out.println("Recalculado");
                     }
                     break;
                 }
@@ -147,7 +165,13 @@ public class Tablero extends JFrame {
                             tableroController.tablero.canvas.tamX, tableroController.rigth,
                             tableroController.tablero.canvas.tamY, tableroController.top + tableroController.extraTop);
                     if (q != null) {
-                        pacman.rigth();
+                        pacman.rigth(Player.VEL);
+                        System.out.println("Mi culpa " + pacman.position);
+                    } else {
+                        pacman.up(Nodo.howMuchICanMove(tableroController.graph, pacman.getPosition(),
+                                tableroController.tablero.canvas.tamX, tableroController.rigth,
+                                tableroController.tablero.canvas.tamY, tableroController.top + tableroController.extraTop, new Point(1, 0)));
+                        System.out.println("Recalculado");
                     }
                     break;
                 }
