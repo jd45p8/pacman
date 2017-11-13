@@ -225,13 +225,17 @@ public class Nodo {
                 if (direction.x != 0) {
                     if (direction.x == 1) {
                         amount = nodo.location.x * scaleX + extraX - location.x;
-                        if ((amount > 0 && amount < Player.VEL) == false) {
+                        if (amount > 0 && amount < Player.VEL) {
+                            return amount;
+                        }else {
                             nodo = null;
                             amount = 0;
                         }
                     } else {
                         amount = location.x - nodo.location.x * scaleX + extraX;
-                        if ((amount > 0 && amount < Player.VEL) == false) {
+                        if (amount > 0 && amount < Player.VEL){
+                            return amount;
+                        }else {
                             nodo = null;
                             amount = 0;
                         }
@@ -240,13 +244,17 @@ public class Nodo {
                 {
                     if (direction.y == 1) {
                         amount = location.y - nodo.location.y * scaleY + extraY;
-                        if ((amount > 0 && amount < Player.VEL) == false) {
+                        if (amount > 0 && amount < Player.VEL) {
+                            return amount;
+                        }else {
                             nodo = null;
                             amount = 0;
                         }
                     } else {
                         amount = nodo.location.y * scaleY + extraY - location.y;
-                        if ((amount > 0 && amount < Player.VEL) == false) {
+                        if (amount > 0 && amount < Player.VEL) {
+                            return amount;
+                        }else {
                             nodo = null;
                             amount = 0;
                         }
@@ -258,14 +266,18 @@ public class Nodo {
                     if (direction.x == 1 && nodo.location.x * scaleX + extraX - location.x < menor.location.x * scaleX + extraX - location.x) {
                         menor = nodo;
                         amount = nodo.location.x * scaleX + extraX - location.x;
-                        if ((amount > 0 && amount < Player.VEL) == false) {
+                        if (amount > 0 && amount < Player.VEL) {
+                            return amount;
+                        }else {
                             nodo = null;
                             amount = 0;
                         }
                     } else if (location.x - nodo.location.x * scaleX + extraX < location.x - menor.location.x * scaleX + extraX) {
                         menor = nodo;
                         amount = location.x - nodo.location.x * scaleX + extraX;
-                        if ((amount < 0 && amount > Player.VEL) == false) {
+                        if (amount < 0 && amount > Player.VEL) {
+                            return amount;
+                        }else {
                             nodo = null;
                             amount = 0;
                         }
@@ -275,14 +287,18 @@ public class Nodo {
                     if (direction.y == 1 && nodo.location.y * scaleY + extraY - location.y < menor.location.y * scaleY + extraY - location.y) {
                         menor = nodo;
                         amount = nodo.location.y * scaleY + extraY - location.y;
-                        if ((amount < 0 && amount > -Player.VEL) == false) {
+                        if (amount < 0 && amount > -Player.VEL) {
+                            return amount;
+                        }else {
                             nodo = null;
                             amount = 0;
                         }
                     } else if (location.y - nodo.location.y * scaleY + extraY < menor.location.y * scaleY + extraY - location.y) {
                         menor = nodo;
                         amount = location.y - nodo.location.y * scaleY + extraY;
-                        if ((amount > 0 && amount < Player.VEL) == false) {
+                        if (amount > 0 && amount < Player.VEL) {
+                            return amount;
+                        }else {
                             nodo = null;
                             amount = 0;
                         }

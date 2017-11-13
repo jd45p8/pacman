@@ -13,7 +13,8 @@ import java.awt.Point;
  */
 public class Player {
     public Point position;
-    public static final int VEL = 8;    
+    public Nodo actualNodo;
+    public static final int VEL = 2;    
 
     public Player(Point position) {
         this.position = position;

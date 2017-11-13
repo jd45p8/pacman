@@ -5,10 +5,19 @@
  */
 package model;
 
+import java.awt.Point;
+
 /**
  *
  * @author jd45
  */
-public class Ghost {
+public class Ghost extends Player{
+    
+    public Ghost(Point position) {
+        super(position);
+        
+    }
+       
+    
     
 }
