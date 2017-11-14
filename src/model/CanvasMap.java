@@ -172,7 +172,7 @@ public class CanvasMap extends Canvas {
                             }
                         }
 
-                        if (tableroController.score == 2000) {
+                        if (tableroController.score == 10) {
                             g.setColor(Color.WHITE);
                             g.setFont(new Font("Rockwell", Font.BOLD, canvas.getWidth() / 5));
                             g.drawString("You Win", canvas.getHeight() / 9, canvas.getWidth() / 5 + 50);

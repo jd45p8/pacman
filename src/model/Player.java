@@ -17,7 +17,7 @@ public class Player {
 
     public Point position;
     public Nodo actualNodo;
-    public final static int VEL = 2;
+    public final static int VEL = 4;
     public BufferedImage sprite = CanvasMap.spritesPlayers[0];    
 
     public Player(Point position) {

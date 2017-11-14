@@ -394,7 +394,7 @@ public class tableroController {
                     break;
             }
             if (q != null && q.objetive) {
-                score += 200;
+                score += 1;
                 q.objetive = false;
                 tableroController.chompSound.loop(1);
             }

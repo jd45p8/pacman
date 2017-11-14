@@ -121,7 +121,7 @@ public class Ghost extends Player {
                         break;
                     }
 
-                    if (tableroController.score == 2000) {
+                    if (tableroController.score == 10) {
                         break;
                     }
 
