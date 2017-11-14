@@ -28,6 +28,38 @@ public class Nodo {
         objetive = false;
     }
 
+    public boolean isObjetive() {
+        return objetive;
+    }
+
+    public void setObjetive(boolean objetive) {
+        this.objetive = objetive;
+    }
+
+    public Point getLocation() {
+        return location;
+    }
+
+    public void setLocation(Point location) {
+        this.location = location;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public ArrayList<Nodo> getAdyacentes() {
+        return Adyacentes;
+    }
+
+    public void setAdyacentes(ArrayList<Nodo> Adyacentes) {
+        this.Adyacentes = Adyacentes;
+    }
+
     /**
      * Transforma la matriz que representa el mapa del juego en un grafo en
      * forma de matriz de adyacencia.
@@ -37,7 +69,7 @@ public class Nodo {
      * extrajo del mapa.
      */
     public static ArrayList<Nodo> fromArrayToGraph(int[][] mapa) {
-        int cant = 0;
+        int cant = 0, vertexCant = 0;
         ArrayList<Nodo> graph = new ArrayList<>();
 
         while (true) {
@@ -55,7 +87,8 @@ public class Nodo {
                 if (mapa[j][i] != 1) {
                     Nodo p = searchInArray(graph, new Point(j, i));
                     if (p == null && mapa[j][i] != 1) {
-                        graph.add(new Nodo(new Point(j, i), j + i));
+                        graph.add(new Nodo(new Point(j, i), vertexCant));
+                        vertexCant++;
                         p = searchInArray(graph, new Point(j, i));
                         p.Adyacentes = new ArrayList<>();
                     }
@@ -65,7 +98,8 @@ public class Nodo {
                         if (i >= 0 && i < mapa[0].length - 1) {
                             Nodo q = searchInArray(graph, new Point(j, i + 1));
                             if (q == null && mapa[j][i + 1] != 1) {
-                                graph.add(new Nodo(new Point(j, i + 1), j + i + 1));
+                                graph.add(new Nodo(new Point(j, i + 1), vertexCant));
+                                vertexCant++;
                                 q = searchInArray(graph, new Point(j, i + 1));
                                 q.Adyacentes = new ArrayList<>();
                                 p.Adyacentes.add(q);
@@ -79,7 +113,8 @@ public class Nodo {
                         if (i > 0 && i < mapa[0].length) {
                             Nodo q = searchInArray(graph, new Point(j, i - 1));
                             if (q == null && mapa[j][i - 1] != 1) {
-                                graph.add(new Nodo(new Point(j, i - 1), j + i - 1));
+                                graph.add(new Nodo(new Point(j, i - 1), vertexCant));
+                                vertexCant++;
                                 q = searchInArray(graph, new Point(j, i - 1));
                                 q.Adyacentes = new ArrayList<>();
                                 p.Adyacentes.add(q);
@@ -93,7 +128,8 @@ public class Nodo {
                         if (j >= 0 && j < cant - 1) {
                             Nodo q = searchInArray(graph, new Point(j + 1, i));
                             if (q == null && mapa[j + 1][i] != 1) {
-                                graph.add(new Nodo(new Point(j + 1, i), j + 1 + i));
+                                graph.add(new Nodo(new Point(j + 1, i), vertexCant));
+                                vertexCant++;
                                 q = searchInArray(graph, new Point(j + 1, i));
                                 q.Adyacentes = new ArrayList<>();
                                 p.Adyacentes.add(q);
@@ -107,7 +143,8 @@ public class Nodo {
                         if (j > 0 && j < cant) {
                             Nodo q = searchInArray(graph, new Point(j - 1, i));
                             if (q == null && mapa[j - 1][i] != 1) {
-                                graph.add(new Nodo(new Point(j - 1, i), j - 1 + i));
+                                graph.add(new Nodo(new Point(j - 1, i), vertexCant));
+                                vertexCant++;
                                 q = searchInArray(graph, new Point(j - 1, i));
                                 q.Adyacentes = new ArrayList<>();
                                 p.Adyacentes.add(q);
@@ -132,7 +169,6 @@ public class Nodo {
                 break;
             }
         }
-
         return graph;
     }
 
@@ -169,10 +205,10 @@ public class Nodo {
      * @param extraY es la desviación en y del punto a casusa del dibujado.
      * @return retorna el nodo buscado si fué encontrado.
      */
-    public static Nodo searchInGraph(ArrayList<Nodo> graph, Point location, int scaleX, int extraX, int scaleY, int extraY) {
+     public static Nodo searchInGraph(ArrayList<Nodo> graph, Point location, int scaleX, int extraX, int scaleY, int extraY) {
         for (Nodo nodo : graph) {
             if (location.x >= nodo.location.x * scaleX + extraX && location.x < nodo.location.x * scaleX + scaleX + extraX) {
-                if (location.y >= nodo.location.y * scaleY + extraY && location.y < nodo.location.y * scaleY + scaleY + extraY) {
+                if (location.y >= nodo.location.y * scaleY + extraY && location.y < nodo.location.y * scaleY + scaleY + extraY) {                    
                     return nodo;
                 }
             }
@@ -227,15 +263,15 @@ public class Nodo {
                         amount = nodo.location.x * scaleX + extraX - location.x;
                         if (amount > 0 && amount < Player.VEL) {
                             return amount;
-                        }else {
+                        } else {
                             nodo = null;
                             amount = 0;
                         }
                     } else {
                         amount = location.x - nodo.location.x * scaleX + extraX;
-                        if (amount > 0 && amount < Player.VEL){
+                        if (amount > 0 && amount < Player.VEL) {
                             return amount;
-                        }else {
+                        } else {
                             nodo = null;
                             amount = 0;
                         }
@@ -246,7 +282,7 @@ public class Nodo {
                         amount = location.y - nodo.location.y * scaleY + extraY;
                         if (amount > 0 && amount < Player.VEL) {
                             return amount;
-                        }else {
+                        } else {
                             nodo = null;
                             amount = 0;
                         }
@@ -254,7 +290,7 @@ public class Nodo {
                         amount = nodo.location.y * scaleY + extraY - location.y;
                         if (amount > 0 && amount < Player.VEL) {
                             return amount;
-                        }else {
+                        } else {
                             nodo = null;
                             amount = 0;
                         }
@@ -268,7 +304,7 @@ public class Nodo {
                         amount = nodo.location.x * scaleX + extraX - location.x;
                         if (amount > 0 && amount < Player.VEL) {
                             return amount;
-                        }else {
+                        } else {
                             nodo = null;
                             amount = 0;
                         }
@@ -277,7 +313,7 @@ public class Nodo {
                         amount = location.x - nodo.location.x * scaleX + extraX;
                         if (amount < 0 && amount > Player.VEL) {
                             return amount;
-                        }else {
+                        } else {
                             nodo = null;
                             amount = 0;
                         }
@@ -289,7 +325,7 @@ public class Nodo {
                         amount = nodo.location.y * scaleY + extraY - location.y;
                         if (amount < 0 && amount > -Player.VEL) {
                             return amount;
-                        }else {
+                        } else {
                             nodo = null;
                             amount = 0;
                         }
@@ -298,7 +334,7 @@ public class Nodo {
                         amount = location.y - nodo.location.y * scaleY + extraY;
                         if (amount > 0 && amount < Player.VEL) {
                             return amount;
-                        }else {
+                        } else {
                             nodo = null;
                             amount = 0;
                         }
@@ -307,6 +343,28 @@ public class Nodo {
             }
         }
         return amount;
+    }
+
+    /**
+     * Calcula la distancia en pixeles entre dos nodos
+     *
+     * @param n
+     * @param n2
+     * @return
+     */
+    public static int dEntreNyN(Nodo n, Nodo n2) {
+        return (int) Math.sqrt(Math.pow(n2.location.x - n.location.x, 2) + Math.pow(n2.location.y - n.location.y, 2));
+    }
+    
+    /**
+     * Calcula la distancia en pixeles entre un nodo y un punto
+     *
+     * @param n
+     * @param p
+     * @return
+     */
+    public static int dEntreNyV(Nodo n, Point p) {
+        return (int) Math.sqrt(Math.pow(p.x - n.location.x, 2) + Math.pow(p.y - n.location.y, 2));
     }
 
 }

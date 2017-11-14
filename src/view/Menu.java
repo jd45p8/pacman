@@ -8,14 +8,14 @@ package view;
 import java.util.ArrayList;
 import javax.swing.JLabel;
 import controller.menuController;
-import controller.tableroController;
+
 
 /**
  *
  * @author jd45
  */
 public class Menu extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form Menu
      */
@@ -23,7 +23,7 @@ public class Menu extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         menuController.menu = this;        
-       
+        menuController.GameMusic.run();
     }
 
     /**
@@ -152,10 +152,12 @@ public class Menu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
-        menuController.changeOptionDisplayed(evt, new ArrayList<JLabel>(){{
-            add(startSelector);
-            add(exitSelector);
-        }});
+        menuController.changeOptionDisplayed(evt, new ArrayList<JLabel>() {
+            {
+                add(startSelector);
+                add(exitSelector);
+            }
+        });
     }//GEN-LAST:event_formKeyPressed
 
     private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased

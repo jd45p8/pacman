@@ -7,6 +7,9 @@ package controller;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JLabel;
 import view.Menu;
 import view.Tablero;
@@ -73,8 +76,8 @@ public class menuController {
     public static void launchOption(KeyEvent evt, Menu parent) {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             switch (optionSelected) {
-                case 1:  
-                    parent.setVisible(false);                      
+                case 1:
+                    parent.setVisible(false);
                     tableroController.tablero = new Tablero();
                     break;
                 default:
@@ -82,5 +85,23 @@ public class menuController {
             }
         }
     }
-}
 
+    /**
+     * Es el reproductor de la pista de audio del juego.
+     */
+    public static Clip gameSound;
+
+    public static Thread GameMusic = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            try {
+                AudioInputStream as1 = AudioSystem.getAudioInputStream(Menu.class.getClassLoader().getResourceAsStream("extras/Pac-man theme remix - By Arsenic1987.wav"));
+                gameSound = AudioSystem.getClip();
+                gameSound.open(as1);
+                gameSound.loop(Clip.LOOP_CONTINUOUSLY);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+    });
+}

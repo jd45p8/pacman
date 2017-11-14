@@ -5,35 +5,43 @@
  */
 package model;
 
+import controller.tableroController;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
 
 /**
  *
  * @author jd45
  */
 public class Player {
+
     public Point position;
     public Nodo actualNodo;
-    public static final int VEL = 2;    
+    public final static int VEL = 2;
+    public BufferedImage sprite = CanvasMap.spritesPlayers[0];    
 
     public Player(Point position) {
         this.position = position;
     }
-    
-    public void up(int amount){
-        position.y-=amount;        
+
+    public void up(int amount) {
+        position.y -= amount;        
+        sprite = CanvasMap.spritesPlayers[0];
     }
-    
-    public void down(int amount){
-        position.y+=amount;
+
+    public void down(int amount) {
+        position.y += amount;
+        sprite = CanvasMap.spritesPlayers[1];
     }
-    
-    public void left(int amount){
-        position.x-=amount;
+
+    public void left(int amount) {
+        position.x -= amount;
+        sprite = CanvasMap.spritesPlayers[3];
     }
-    
-    public void rigth(int amount){
-        position.x+=amount;
+
+    public void rigth(int amount) {
+        position.x += amount;
+        sprite = CanvasMap.spritesPlayers[2];
     }
 
     public Point getPosition() {
@@ -43,6 +51,5 @@ public class Player {
     public void setPosition(Point position) {
         this.position = position;
     }
-    
-    
+
 }

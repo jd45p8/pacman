@@ -1,5 +1,6 @@
 package controller;
 
+import java.awt.EventQueue;
 import java.awt.Point;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -7,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -16,12 +18,17 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JFileChooser;
 import model.CanvasMap;
 import static model.CanvasMap.tamX;
 import static model.CanvasMap.tamY;
+import model.Ghost;
 import model.Nodo;
 import model.Player;
+import view.Menu;
 import view.Tablero;
 
 /*
@@ -79,6 +86,11 @@ public class tableroController {
      * Es el puntaje que ha acumulado el jugador en el juego.
      */
     public static int score;
+
+    /**
+     * Son las vidas del jugador en el juego.
+     */
+    public static int lives;
 
     /**
      * Es el tamaño de los mapas del tablero en número de elementos por fila y
@@ -218,18 +230,32 @@ public class tableroController {
     }
 
     /**
-     * Método que le asigna a los sujetos en pantalla la ubicaón del último nodo
-     * donde se encontraban.
+     * Método que le asigna a los sujetos en pantalla la ubicación donde deben
+     * hallarse;
      */
-    public static void resetLocation() {
+    public static void setLocation() {
         if (tablero.pacman != null) {
-            if (tablero.pacman.actualNodo == null) {
-                tablero.pacman.position = new Point(graph.get(100).location.x * CanvasMap.tamX + rigth,
-                        graph.get(100).location.y * CanvasMap.tamY + top + extraTop);
-            } else {
-                tablero.pacman.position = new Point(tablero.pacman.actualNodo.location.x * CanvasMap.tamX + rigth,
-                        tablero.pacman.actualNodo.location.y * CanvasMap.tamY + top + extraTop);
-            }
+            tablero.pacman.position = new Point(tablero.pacman.actualNodo.location.x * CanvasMap.tamX + rigth,
+                    tablero.pacman.actualNodo.location.y * CanvasMap.tamY + top + extraTop);
+
+        } else {
+            tablero.pacman = new Player(new Point(graph.get(87).location.x * tablero.canvas.tamX + rigth,
+                    graph.get(87).location.y * tablero.canvas.tamY + top + extraTop)
+            );
+            tablero.pacman.actualNodo = graph.get(87);
+        }
+
+        if (tablero.fantasma != null) {
+            tablero.fantasma.position = new Point(tablero.fantasma.actualNodo.location.x * CanvasMap.tamX + rigth,
+                    tablero.fantasma.actualNodo.location.y * CanvasMap.tamY + top + extraTop);
+
+        } else {
+            tablero.fantasma = new Ghost(new Point(graph.get(168).location.x * tablero.canvas.tamX + rigth,
+                    graph.get(168).location.y * tablero.canvas.tamY + top + extraTop)
+            );
+            tablero.fantasma.actualNodo = graph.get(168);
+            tablero.fantasma.movingTo = tablero.fantasma.actualNodo;
+            tablero.fantasma.moveGhost.start();
         }
     }
 
@@ -252,7 +278,13 @@ public class tableroController {
         tamX = tamY = (tablero.canvas.getHeight() - top - down) / mapa[0].length;
         rigth = (tablero.canvas.getWidth() - tamX * cant) / 2;
         extraTop = (tablero.canvas.getHeight() - tamY * mapa[0].length - top - down) / 2;
-
+        CanvasMap.spritesPlayers = new BufferedImage[6];
+        CanvasMap.spritesPlayers[0] = CanvasMap.cutMapaImage("extras/up.png", 180, 180)[0];
+        CanvasMap.spritesPlayers[1] = CanvasMap.cutMapaImage("extras/down.png", 180, 180)[0];
+        CanvasMap.spritesPlayers[2] = CanvasMap.cutMapaImage("extras/rigth.png", 180, 180)[0];
+        CanvasMap.spritesPlayers[3] = CanvasMap.cutMapaImage("extras/left.png", 180, 180)[0];
+        CanvasMap.spritesPlayers[4] = CanvasMap.cutMapaImage("extras/Pacman-red-blinky.sh-600x600.png", 500, 500)[0];
+        CanvasMap.spritesPlayers[5] = CanvasMap.cutMapaImage("extras/sprites.png", 96, 96)[0];
     }
 
     /**
@@ -268,14 +300,14 @@ public class tableroController {
             calculateSizes();
             if (tablero.isDisplayable() && tablero.canvas.isDisplayable()) {
                 tablero.canvas.drawThread.start();
-                resetLocation();
+                setLocation();
             }
 
         }
 
         @Override
         public void componentMoved(ComponentEvent e) {
-            resetLocation();
+            setLocation();
         }
 
         @Override
@@ -364,6 +396,7 @@ public class tableroController {
             if (q != null && q.objetive) {
                 score += 200;
                 q.objetive = false;
+                tableroController.chompSound.loop(1);
             }
         }
 
@@ -374,6 +407,9 @@ public class tableroController {
     };
 
     /**
+     * Es el método que inicia la música del juego.
+     */
+    /**
      * Listenner que detectará cuadno el juego está máximisado o minimizado
      *
      * @param args
@@ -381,10 +417,51 @@ public class tableroController {
     public static WindowStateListener windowsStateListener = new WindowStateListener() {
         @Override
         public void windowStateChanged(WindowEvent e) {
-            System.out.println("I have changed " + e.getNewState());
-            System.out.println(e.getWindow().getBounds());
-            resetLocation();
+            setLocation();
         }
     };
+
+    /**
+     * Es el reproductor de la pista de audio del juego.
+     */
+    public static Clip inicioSound;
+    public static Clip chompSound;
+    public static Clip deathSound;
+
+    /**
+     * COntrola los sonidos del juego.
+     */
+    public static Thread GameEfects = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            try {
+
+                AudioInputStream as1 = AudioSystem.getAudioInputStream(Menu.class.getClassLoader().getResourceAsStream("extras/pacman_beginning.wav"));
+                inicioSound = AudioSystem.getClip();
+                inicioSound.open(as1);
+                inicioSound.start();
+
+                AudioInputStream as2 = AudioSystem.getAudioInputStream(Menu.class.getClassLoader().getResourceAsStream("extras/pacman_chomp.wav"));
+                chompSound = AudioSystem.getClip();
+                chompSound.open(as2);
+
+                AudioInputStream as3 = AudioSystem.getAudioInputStream(Menu.class.getClassLoader().getResourceAsStream("extras/pacman_death.wav"));
+                deathSound = AudioSystem.getClip();
+                deathSound.open(as3);
+
+                while (true) {
+                    if (tableroController.tablero.pacman != null) {
+                        if (tableroController.tablero.pacman.actualNodo.getId() == tableroController.tablero.fantasma.actualNodo.getId()) {
+                            break;
+                        }
+
+                    }
+                }
+
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+    });
 
 }

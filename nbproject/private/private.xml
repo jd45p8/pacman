@@ -5,7 +5,7 @@
             <url>src/controller/tableroController.java</url>
             <bookmark id="1">
                 <name/>
-                <line>51</line>
+                <line>63</line>
                 <key/>
             </bookmark>
         </file>
@@ -20,13 +20,13 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/jd45/NetBeansProjects/pacman/src/view/Menu.java</file>
-            <file>file:/home/jd45/NetBeansProjects/pacman/src/model/CanvasMap.java</file>
-            <file>file:/home/jd45/NetBeansProjects/pacman/src/controller/tableroController.java</file>
-            <file>file:/home/jd45/NetBeansProjects/pacman/src/model/Player.java</file>
-            <file>file:/home/jd45/NetBeansProjects/pacman/src/model/Nodo.java</file>
-            <file>file:/home/jd45/NetBeansProjects/pacman/src/view/Tablero.java</file>
-            <file>file:/home/jd45/NetBeansProjects/pacman/src/controller/menuController.java</file>
+            <file>file:/home/jd45/NetBeansProjects/Pacman/src/controller/tableroController.java</file>
+            <file>file:/home/jd45/NetBeansProjects/Pacman/src/model/Player.java</file>
+            <file>file:/home/jd45/NetBeansProjects/Pacman/src/model/Nodo.java</file>
+            <file>file:/home/jd45/NetBeansProjects/Pacman/src/model/CanvasMap.java</file>
+            <file>file:/home/jd45/NetBeansProjects/Pacman/src/model/Ghost.java</file>
+            <file>file:/home/jd45/NetBeansProjects/Pacman/src/controller/DijkstraMatriz.java</file>
+            <file>file:/home/jd45/NetBeansProjects/Pacman/src/view/Tablero.java</file>
         </group>
     </open-files>
 </project-private>

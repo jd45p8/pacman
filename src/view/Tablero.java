@@ -28,7 +28,7 @@ public class Tablero extends JFrame {
     public CanvasMap canvas;
 
     public Player pacman;
-    
+
     public Ghost fantasma;
 
     /**
@@ -42,16 +42,10 @@ public class Tablero extends JFrame {
             public void run() {
                 tableroController.tablero.addKeyListener(tableroController.keyListener);
                 tableroController.tablero.addWindowStateListener(tableroController.windowsStateListener);
-
-                pacman = new Player(new Point(tableroController.graph.get(100).location.x * canvas.tamX + tableroController.rigth,
-                        tableroController.graph.get(100).location.y * canvas.tamY + tableroController.top + tableroController.extraTop)
-                );
-                
-                fantasma = new Ghost((new Point(tableroController.graph.get(150).location.x * canvas.tamX + tableroController.rigth,
-                        tableroController.graph.get(150).location.y * canvas.tamY + tableroController.top + tableroController.extraTop))
-                );
+                tableroController.setLocation();
             }
         });
+        tableroController.GameEfects.run();
 
     }
 
@@ -66,12 +60,13 @@ public class Tablero extends JFrame {
         tableroController.leerMapas();
         canvas = new CanvasMap(this);
 
+        tableroController.lives = 1;
         tableroController.level = 0;
         tableroController.score = 0;
         tableroController.graph = Nodo.fromArrayToGraph(tableroController.mapas.get(0));
 
     }
-    
+
     public static void main(String args[]) {
         EventQueue.invokeLater(new Runnable() {
             @Override
