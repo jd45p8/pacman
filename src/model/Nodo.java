@@ -157,17 +157,9 @@ public class Nodo {
                 }
             }
         }
-        Random rd = new Random();
-        int i = 0;
-        for (Nodo nodo : graph) {
-            int k = rd.nextInt(graph.size());
-            if (!graph.get(k).objetive) {
-                graph.get(k).objetive = true;
-                i++;
-            }
-            if (i == 10) {
-                break;
-            }
+        int[] objetives = new int[]{12,14,29,85,52,112,152,107,165,172};
+        for (int objetive : objetives) {
+            graph.get(objetive).setObjetive(true);
         }
         return graph;
     }
