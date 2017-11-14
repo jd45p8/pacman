@@ -454,7 +454,10 @@ public class tableroController {
                         if (tableroController.tablero.pacman.actualNodo.getId() == tableroController.tablero.fantasma.actualNodo.getId()) {
                             break;
                         }
-
+                        
+                        if (tableroController.score == 10) {
+                            break;
+                        }
                     }
                 }
 
